@@ -8,6 +8,7 @@
 
         <!-- This sample can work without CDI configured, but the use of CDI is always strongly encouraged with batch. -->
         <feature>cdi-1.2</feature>
+        <feature>logstashCollector-1.0</feature>
 
         <!-- Admin Center Java Batch tool, don't download by default  -->
 <!--
@@ -16,23 +17,26 @@
     </featureManager>
 
 <!-- A user of the Admin Center Java Batch tool must ALSO be an administrator.  This is independent of whatever batch roles,
-     "batchAdmin", "batchSubmitter", etc. are mapped to this user. 
+     "batchAdmin", "batchSubmitter", etc. are mapped to this user.
      Leave this commented out for now -->
 <!--
     <administrator-role>
       <user>bob</user>
    </administrator-role>
 -->
+    <httpAccessLogging id="accessLogging" logFormat='%h %u %t "%r" %s %b %D %{User-agent}i'/>
 
     <!-- To access this server from a remote client add a host attribute to
         the following element, e.g. host="*" -->
-    <httpEndpoint httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"/>
+    <httpEndpoint httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint" accessLoggingRef="accessLogging"/>
 
     <library id="DerbyLib">
         <fileset dir="${shared.resource.dir}/derby"/>
     </library>
 
-    <logging traceSpecification="BonusPayout=finer:com.ibm.ws.batch.JobLogger=finest"/>
+    <logging traceSpecification="demo_logger=all"/>
+
+    <!-- <logging traceSpecification="BonusPayout=finer:com.ibm.ws.batch.JobLogger=finest"/> -->
     <!--
          Debug batch runtime:
     <logging traceSpecification="BonusPayout=all=enabled:com.ibm.jbatch.*=all:com.ibm.ws.jbatch.*=all"/>
@@ -62,6 +66,21 @@
     <applicationMonitor updateTrigger="mbean"/>
 
     <keyStore id="defaultKeyStore" password="Liberty"/>
+    <keyStore id="defaultTrustStore" location="trust.jks" password="Liberty" />
+    <ssl id="mySSLConfig" trustStoreRef="defaultTrustStore" keyStoreRef="defaultKeyStore" />
+
+    <logging messageFormat="json" messageSource="message,trace,accessLog,batchJobLog,ffdc,audit" />
+
+    <logstashCollector
+    	source="message,trace,garbageCollection,ffdc,accessLog,batchJobLog,audit"
+    	hostName="localhost"
+    	port="5043"
+    	sslRef="mySSLConfig"
+    	maxEvents="0"
+    	maxFieldLength="0">
+    	<tag>serverRackA5</tag>
+    	<tag>billingAppTeam</tag>
+    </logstashCollector>
 
     <basicRegistry id="basic" realm="ibm/api">
         <user name="bob" password="bobpwd"/>

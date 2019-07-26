@@ -40,6 +40,8 @@ public class ValidationDBReadChunkListener implements ChunkListener, BonusPayout
 
     private final static Logger logger = Logger.getLogger(BONUS_PAYOUT_LOGGER);
 
+    private final static Logger logger2 = Logger.getLogger("demo_logger");
+    
     @Inject
     @BatchProperty(name = "chunkSize")
     private String chunkSizeStr;
@@ -116,7 +118,8 @@ public class ValidationDBReadChunkListener implements ChunkListener, BonusPayout
 
     @Override
     public void afterChunk() throws Exception {
-        cleanup();
+        logger2.fine("DEMO");
+    	cleanup();
     }
 
     private void cleanup() throws Exception {

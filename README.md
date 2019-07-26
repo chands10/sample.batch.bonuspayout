@@ -8,6 +8,8 @@ It involves a three-step job, which generates some random data, performs a calcu
 ## SAMPLE INSTRUCTIONS ON WIKI
 [START HERE](https://github.com/WASdev/sample.batch.bonuspayout/wiki/)
 
+Installing may result in errors in logstash collector functionality unless step 4 from https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_analytics_logstash.html is completed (might not be able to complete step 4 until install is complete).
+
 ## QUICK LINKS
 
 The first time through you should start at the above link and step through in-order.
