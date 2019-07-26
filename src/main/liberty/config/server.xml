@@ -34,6 +34,7 @@
         <fileset dir="${shared.resource.dir}/derby"/>
     </library>
 
+    <!-- <logging traceSpecification="BonusPayout=finer:com.ibm.ws.batch.JobLogger=finest"/> -->
     <logging traceSpecification="demo_logger=all"/>
 
     <!-- <logging traceSpecification="BonusPayout=finer:com.ibm.ws.batch.JobLogger=finest"/> -->
